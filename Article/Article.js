@@ -2,6 +2,13 @@
 /* Look over this data, then proceed to line 91*/
 const data = [
   {
+    title: 'January Job Offers',
+    date: 'Jan 31st, 2020',
+    firstParagraph: 'A lot of LambdaSchool students got job offers this month.',
+    secondParagraph: 'It was a good mix of smaller services firms and larger established software companies',
+    thirdParagraph: 'Congratulations to all of our students!'
+  },
+  {
     title: 'Lambda School Students: "We\'re the best!"',
     date: 'Nov 5th, 2018',
     firstParagraph: `Lucas ipsum dolor sit amet ben twi'lek padmé darth darth darth moff hutt organa twi'lek. Ben amidala secura skywalker lando
@@ -112,3 +119,48 @@ const data = [
   Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new article.
 
 */
+
+function buildArticle(title, articleDate, para1, para2, para3) {
+  let article = document.createElement('div');
+  article.classList.add("article");
+
+  let headline = document.createElement('h2');
+  headline.textContent = title;
+
+  let date = document.createElement('p');
+  date.classList.add("date");
+  date.textContent = articleDate;
+
+  let button = document.createElement('span');
+  button.classList.add("expandButton");
+  button.addEventListener('click', event => {
+    event.target.parentNode.classList.toggle("article-open");
+  });
+
+  const paragraphs = [para1, para2, para3].map(paragraphContent => {
+    let paragraphElement = document.createElement('p');
+    paragraphElement.textContent = paragraphContent;
+    return paragraphElement;
+  });
+
+  [headline, date, ...paragraphs, button].forEach(element => {
+    article.appendChild(element);
+  });
+
+  return article;
+}
+
+const articleComponents = data.map(datum => {
+  return buildArticle(
+    datum.title,
+    datum.date,
+    datum.firstParagraph,
+    datum.secondParagraph,
+    datum.thirdParagraph
+  );
+});
+
+let articles = document.querySelector('.articles');
+articleComponents.forEach(article => {
+  articles.appendChild(article);
+});
