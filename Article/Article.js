@@ -123,6 +123,7 @@ const data = [
 function buildArticle(title, articleDate, para1, para2, para3) {
   let article = document.createElement('div');
   article.classList.add("article");
+  article.classList.add("article-closed");
 
   let headline = document.createElement('h2');
   headline.textContent = title;
@@ -150,6 +151,7 @@ function buildArticle(title, articleDate, para1, para2, para3) {
   return article;
 }
 
+// Generates array of article componenents with data
 const articleComponents = data.map(datum => {
   return buildArticle(
     datum.title,
@@ -160,7 +162,20 @@ const articleComponents = data.map(datum => {
   );
 });
 
+// Adds article components to article element
 let articles = document.querySelector('.articles');
 articleComponents.forEach(article => {
   articles.appendChild(article);
+});
+
+// Animates articles opening
+articles.childNodes.forEach(article => {
+  article.addEventListener('click', function(event) {
+    if (this.classList.contains('article-closed')) {
+      gsap.to(this, { duration: 1, height: 'auto' });
+    } else {
+      gsap.to(this, { duration: 1, height: 50 });
+    }
+    this.classList.toggle('article-closed');
+  });
 });
