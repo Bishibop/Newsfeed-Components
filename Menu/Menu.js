@@ -33,3 +33,64 @@ let menuItems = [
   Step 6: add the menu component to the DOM.
   
 */
+
+function openMenu() {
+  menu.classList.toggle('menu--open');
+  gsap.fromTo(
+    menu,
+    { x: -350},
+    { duration: 2, x: 0 }
+  );
+}
+
+function closeMenu() {
+  gsap.fromTo(menu, {x: 0}, {
+    duration: 2,
+    x: -350,
+    onComplete: () => { menu.classList.toggle('menu--open'); }
+  });
+}
+
+function buildMenu(menuArray) {
+  let menu = document.createElement('div');
+  menu.classList.add('menu');
+
+  let menuItemsList = document.createElement('ul');
+
+  menuArray.forEach(menuText => {
+    let menuElement = document.createElement('li');
+    menuElement.textContent = menuText;
+    menuItemsList.appendChild(menuElement);
+  });
+
+  menu.appendChild(menuItemsList);
+
+  // Toggles the menu
+  let menuButton = document.querySelector('.menu-button');
+  menuButton.addEventListener('click', event => {
+    if (menu.classList.contains('menu--open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+    event.stopPropagation();
+  });
+
+  // Catches the click on the menu so that the menue won't close if you click
+  // on it
+  menu.addEventListener('click', event => {
+    event.stopPropagation();
+  });
+
+  return menu;
+};
+
+let menu = buildMenu(menuItems);
+document.querySelector('.header').appendChild(menu);
+
+document.querySelector('body').addEventListener('click', event => {
+  if (menu.classList.contains('menu--open')) {
+    closeMenu();
+  }
+});
+
